@@ -5,6 +5,7 @@ import java.util.Arrays;
 public class ProductBasket {
     private final Product[] products;
     private int count;
+    private int specialCount = 0;
 
     public ProductBasket() {
         this.products = new Product[5];
@@ -20,6 +21,9 @@ public class ProductBasket {
             count++;
         } else {
             System.out.println("Невозможно добавить продукт");
+        }
+        if (product.isSpecial()) {
+            specialCount++;
         }
     }
     //общая стоимость корзины
@@ -51,6 +55,7 @@ public class ProductBasket {
             System.out.println("В корзине пусто");
         }
         System.out.println("Итого: " + calculateBasketPrice());
+        System.out.println("Специальных товаров: " + specialCount);
     }
     //сравниваем имя продукта
     public boolean productComparison(String productName) {
