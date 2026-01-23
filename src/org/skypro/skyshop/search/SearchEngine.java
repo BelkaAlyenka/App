@@ -48,4 +48,39 @@ public class SearchEngine {
 
         return String.join("\n", representations);
     }
+    public Searchable findMostSuitableMatch(String search) throws BestResultNotFound {
+        if (search == null || search.isEmpty()) {
+            throw new IllegalArgumentException("Поисковый запрос не может быть пустым");
+        }
+
+        Searchable bestMatch = null;
+        int maxCount = 0;
+
+        for (int i = 0; i < size; i++) {
+            Searchable current = elements[i];
+
+            if (current == null) continue;
+            String text = current.getSearchTerm();
+            if (text == null) continue;
+
+            int count = 0;
+            int index = 0;
+            int foundIndex = text.indexOf(search, index);
+
+            while (foundIndex != -1) {
+                count++;
+                index = foundIndex + search.length();
+                foundIndex = text.indexOf(search, index);
+            }
+
+            if (count > maxCount) {
+                maxCount = count;
+                bestMatch = current;
+            }
+        }
+        if (bestMatch == null) {
+            throw new BestResultNotFound(search);
+        }
+        return bestMatch;
+    }
 }
