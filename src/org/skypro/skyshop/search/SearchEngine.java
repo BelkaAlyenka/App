@@ -1,53 +1,44 @@
 package org.skypro.skyshop.search;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class SearchEngine {
-    private final Searchable[] elements;
-    private int size;
+    private final List<Searchable> elements;
 
     public SearchEngine() {
-        this.elements = new Searchable[5];
-        this.size = 0;
+        this.elements = new LinkedList<>();
     }
-
+    //добавляем элементы
     public void add(Searchable element) {
-        if (size < elements.length) {
-            elements[size] = element;
-            size++;
+        if (element == null) {
+            return;
         }
+        elements.add(element);
     }
-
-    public Searchable[] search(String message) {
-        Searchable[] output = new Searchable[5];
-        int index = 0;
+    //поиск по строке
+    public List<Searchable> search(String message) {
+        List<Searchable> results = new LinkedList<>();
 
         for (Searchable element : elements) {
             if (element != null && element.getSearchTerm() != null && element.getSearchTerm().contains(message)) {
-
-                output[index] = element;
-                index++;
-
-                if (index == 5) {
-                    break;
-                }
+                results.add(element);
             }
         }
-
-        Searchable[] finalResults = new Searchable[index];
-        System.arraycopy(output, 0, finalResults, 0, index);
-
-        return finalResults;
+        return results;
     }
-
+    //выводим результаты в строковом представлении
     public String outputSearch(String message) {
-        Searchable[] results = search(message);
-        String[] representations = new String[results.length];
+        List<Searchable> results = search(message);
+        List<String> representations = new LinkedList<>();
 
-        for (int i = 0; i < results.length; i++) {
-            representations[i] = results[i].getStringRepresentation();
+        for (Searchable result : results) {
+            representations.add(result.getStringRepresentation());
         }
 
         return String.join("\n", representations);
     }
+    //поиск наиболее часто встречающегося элемента
     public Searchable findMostSuitableMatch(String search) throws BestResultNotFound {
         if (search == null || search.isEmpty()) {
             throw new IllegalArgumentException("Поисковый запрос не может быть пустым");
@@ -56,9 +47,7 @@ public class SearchEngine {
         Searchable bestMatch = null;
         int maxCount = 0;
 
-        for (int i = 0; i < size; i++) {
-            Searchable current = elements[i];
-
+        for (Searchable current : elements) {
             if (current == null) continue;
             String text = current.getSearchTerm();
             if (text == null) continue;
@@ -78,6 +67,7 @@ public class SearchEngine {
                 bestMatch = current;
             }
         }
+
         if (bestMatch == null) {
             throw new BestResultNotFound(search);
         }
