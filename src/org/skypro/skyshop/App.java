@@ -5,6 +5,8 @@ import org.skypro.skyshop.search.BestResultNotFound;
 import org.skypro.skyshop.search.SearchEngine;
 import org.skypro.skyshop.search.Searchable;
 
+import java.util.List;
+
 public class App {
     public static void main(String[] args) {
         try {
@@ -38,7 +40,36 @@ public class App {
         basket.addProduct(kettle);
         basket.addProduct(scales);
 
+        System.out.println("Проверка с существующим продуктом: ");
+
+        List<Product> deletedProducts = basket.clearByName("смартфон");
+
+        if (deletedProducts.isEmpty()) {
+            System.out.println("Список пуст");
+        } else {
+            for (Product p : deletedProducts) {
+                System.out.println("Удаленный продукт: " + p.getName());
+            }
+        }
+
         basket.printAllProducts();
+
+        System.out.println("___________________________________________________");
+        System.out.println("Проверка с несуществующим продуктом: ");
+
+        deletedProducts = basket.clearByName("кот");
+
+        if (deletedProducts.isEmpty()) {
+            System.out.println("Список пуст");
+        } else {
+            for (Product p : deletedProducts) {
+                System.out.println("Удаленный продукт: " + p.getName());
+            }
+        }
+
+        basket.printAllProducts();
+
+        System.out.println("Остальные методы: ");
         System.out.println(basket.productComparison("ноутбук"));
         basket.clearProductBasket();
         basket.printAllProducts();
