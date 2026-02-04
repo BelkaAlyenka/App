@@ -1,7 +1,6 @@
 package org.skypro.skyshop.search;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class SearchEngine {
     private final List<Searchable> elements;
@@ -17,26 +16,14 @@ public class SearchEngine {
         elements.add(element);
     }
     //поиск по строке
-    public List<Searchable> search(String message) {
-        List<Searchable> results = new LinkedList<>();
-
+    public Map<String, Searchable> search(String message) {
+        TreeMap<String, Searchable> result = new TreeMap<>();
         for (Searchable element : elements) {
             if (element != null && element.getSearchTerm() != null && element.getSearchTerm().contains(message)) {
-                results.add(element);
+                result.put(element.getName(), element);
             }
         }
-        return results;
-    }
-    //выводим результаты в строковом представлении
-    public String outputSearch(String message) {
-        List<Searchable> results = search(message);
-        List<String> representations = new LinkedList<>();
-
-        for (Searchable result : results) {
-            representations.add(result.getStringRepresentation());
-        }
-
-        return String.join("\n", representations);
+        return result;
     }
     //поиск наиболее часто встречающегося элемента
     public Searchable findMostSuitableMatch(String search) throws BestResultNotFound {

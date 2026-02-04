@@ -5,7 +5,7 @@ import org.skypro.skyshop.search.BestResultNotFound;
 import org.skypro.skyshop.search.SearchEngine;
 import org.skypro.skyshop.search.Searchable;
 
-import java.util.List;
+import java.util.*;
 
 public class App {
     public static void main(String[] args) {
@@ -32,7 +32,7 @@ public class App {
 
         Article aboutSmartphone = new Article("про телефон", "Apple iPhone 6s Plus - это один из самых популярных мобильных телефонов на рынке. Он имеет 5,5-дюймовый экран с высоким разрешением и мощный процессор A9");
         Article aboutHeadphones = new Article("беспроводные наушники", "«Настоящие беспроводные» наушники — это Bluetooth-модели, которые работают без какого-либо провода между наушниками и источником звука (смартфоном, ноутбуком и так далее)");
-        Article aboutScales = new Article("взвешивание", "С помощью весов можно взвешивать не только твердые и сыпучие продукты, но и любые жидкости. Прибор умеет измерять объем воды или молока, а также обладает функцией тарирования");
+        Article aboutScales = new Article("про весы", "С помощью весов можно взвешивать не только твердые и сыпучие продукты, но и любые жидкости. Прибор умеет измерять объем воды или молока, а также обладает функцией тарирования");
 
         basket.addProduct(smartphone);
         basket.addProduct(laptop);
@@ -81,10 +81,9 @@ public class App {
         engine.add(aboutHeadphones);
         engine.add(aboutSmartphone);
 
-        System.out.println(engine.outputSearch("наушники"));
-        System.out.println(engine.outputSearch("чайник"));
-        System.out.println(engine.outputSearch("весы"));
-        System.out.println(engine.outputSearch("взвешивание"));
+        showSortedResults(engine.search("наушники"));
+        showSortedResults(engine.search("чайник"));
+        showSortedResults(engine.search("весы"));
 
         try {
             Searchable result = engine.findMostSuitableMatch("наушники");
@@ -98,6 +97,11 @@ public class App {
             System.out.println("Нашли: "+result.getSearchTerm());
         } catch (BestResultNotFound e) {
             System.err.println(e.getMessage());
+        }
+    }
+    private static void showSortedResults(Map<String, Searchable> results) {
+        for (Searchable result : results.values()) {
+            System.out.println(result.getStringRepresentation());
         }
     }
 }
