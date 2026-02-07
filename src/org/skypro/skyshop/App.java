@@ -27,7 +27,7 @@ public class App {
         Product smartphone = new SimpleProduct("смартфон", 13500);
         Product laptop = new SimpleProduct("ноутбук", 70000);
         Product headphones = new FixPriceProduct("наушники");
-        Product kettle = new DiscountedProduct("чайник", 1200, 10);
+        Product fashionHeadphones = new DiscountedProduct("модные наушники", 1200, 10);
         Product scales = new DiscountedProduct("весы", 600, 20);
 
         Article aboutSmartphone = new Article("про телефон", "Apple iPhone 6s Plus - это один из самых популярных мобильных телефонов на рынке. Он имеет 5,5-дюймовый экран с высоким разрешением и мощный процессор A9");
@@ -37,7 +37,7 @@ public class App {
         basket.addProduct(smartphone);
         basket.addProduct(laptop);
         basket.addProduct(headphones);
-        basket.addProduct(kettle);
+        basket.addProduct(fashionHeadphones);
         basket.addProduct(scales);
 
         System.out.println("Проверка с существующим продуктом: ");
@@ -75,7 +75,7 @@ public class App {
         basket.printAllProducts();
 
         engine.add(headphones);
-        engine.add(kettle);
+        engine.add(fashionHeadphones);
         engine.add(scales);
         engine.add(aboutScales);
         engine.add(aboutHeadphones);
@@ -87,20 +87,20 @@ public class App {
 
         try {
             Searchable result = engine.findMostSuitableMatch("наушники");
-            System.out.println("Нашли: "+result.getSearchTerm());
+            System.out.println("Нашли: " + result.getSearchTerm());
         } catch (BestResultNotFound e) {
             System.err.println(e.getMessage());
         }
 
         try {
             Searchable result = engine.findMostSuitableMatch("медуза");
-            System.out.println("Нашли: "+result.getSearchTerm());
+            System.out.println("Нашли: " + result.getSearchTerm());
         } catch (BestResultNotFound e) {
             System.err.println(e.getMessage());
         }
     }
-    private static void showSortedResults(Map<String, Searchable> results) {
-        for (Searchable result : results.values()) {
+    private static void showSortedResults(Set<Searchable> results) {
+        for (Searchable result : results) {
             System.out.println(result.getStringRepresentation());
         }
     }
