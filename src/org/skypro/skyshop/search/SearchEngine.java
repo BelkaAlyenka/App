@@ -3,10 +3,10 @@ package org.skypro.skyshop.search;
 import java.util.*;
 
 public class SearchEngine {
-    private final List<Searchable> elements;
+    private final Set<Searchable> elements;
 
     public SearchEngine() {
-        this.elements = new LinkedList<>();
+        this.elements = new HashSet<>();
     }
     //добавляем элементы
     public void add(Searchable element) {
@@ -16,11 +16,11 @@ public class SearchEngine {
         elements.add(element);
     }
     //поиск по строке
-    public Map<String, Searchable> search(String message) {
-        TreeMap<String, Searchable> result = new TreeMap<>();
+    public Set<Searchable> search(String message) {
+        Set<Searchable> result = new TreeSet<>(new NameLengthComparator());
         for (Searchable element : elements) {
             if (element != null && element.getSearchTerm() != null && element.getSearchTerm().contains(message)) {
-                result.put(element.getName(), element);
+                result.add(element);
             }
         }
         return result;
