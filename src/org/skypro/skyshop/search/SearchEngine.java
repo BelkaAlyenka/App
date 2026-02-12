@@ -1,6 +1,7 @@
 package org.skypro.skyshop.search;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SearchEngine {
     private final Set<Searchable> elements;
@@ -17,13 +18,11 @@ public class SearchEngine {
     }
     //поиск по строке
     public Set<Searchable> search(String message) {
-        Set<Searchable> result = new TreeSet<>(new NameLengthComparator());
-        for (Searchable element : elements) {
-            if (element != null && element.getSearchTerm() != null && element.getSearchTerm().contains(message)) {
-                result.add(element);
-            }
-        }
-        return result;
+        return elements.stream()
+                .filter(element -> element != null &&
+                        element.getSearchTerm() != null &&
+                        element.getSearchTerm().contains(message))
+                .collect(Collectors.toCollection(() -> new TreeSet<>(new NameLengthComparator())));
     }
     //поиск наиболее часто встречающегося элемента
     public Searchable findMostSuitableMatch(String search) throws BestResultNotFound {
