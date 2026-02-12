@@ -23,13 +23,11 @@ public class ProductBasket {
     }
     //общая стоимость корзины
     public int calculateBasketPrice() {
-        int totalPrice = 0;
-        for (List<Product> productsList : mapProducts.values()) {
-            for (Product product : productsList) {
-                totalPrice += product.getProductPrice();
-            }
-        }
-        return totalPrice;
+        return mapProducts.values()
+                .stream()
+                .flatMap(Collection::stream)
+                .mapToInt(Product::getProductPrice)
+                .sum();
     }
     //печатаем содержимое корзины
     public void printAllProducts() {
@@ -38,11 +36,10 @@ public class ProductBasket {
             return;
         }
 
-        for (List<Product> productsList : mapProducts.values()) {
-            for (Product product : productsList) {
-                System.out.println(product);
-            }
-        }
+        mapProducts.values()
+                .stream()
+                .flatMap(Collection::stream)
+                .forEach(System.out::println);
 
         System.out.println("Итого: " + calculateBasketPrice());
         System.out.println("Специальных товаров: " + specialCount);
